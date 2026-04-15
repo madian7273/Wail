@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مجلس قصر الداعية مدين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; background: #000; font-family: 'Cairo', sans-serif; overflow: hidden; }
+        
+        /* صالة القصر الفخمة */
+        .palace-hall {
+            width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex; justify-content: center; align-items: flex-end;
+            position: relative;
+        }
+
+        .character-container { display: flex; gap: 20px; align-items: flex-end; padding-bottom: 50px; }
+
+        .char { position: relative; text-align: center; transition: 0.5s; opacity: 0.8; }
+        .char img { width: 150px; height: 150px; border-radius: 50%; border: 4px solid #D4AF37; object-fit: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .char.active { transform: scale(1.2); opacity: 1; border-color: #fff; }
+        .char-name { background: rgba(0,0,0,0.7); color: #D4AF37; padding: 2px 10px; border-radius: 5px; margin-top: 5px; font-size: 0.9em; }
+
+        /* فقاعة الكلام */
+        .speech-bubble {
+            position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+            background: white; color: black; padding: 15px 25px; border-radius: 20px;
+            width: 250px; font-weight: bold; font-size: 1.1em; display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .speech-bubble::after {
+            content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+            border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;
+        }
+
+        .intro-btn {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            padding: 20px 40px; background: #D4AF37; color: white; border: none;
+            border-radius: 50px; font-size: 1.5em; cursor: pointer; font-family: 'Amiri', serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="palace-hall">
+        <button class="intro-btn" onclick="startScene()">اضغط لمشاهدة لقاء القصر 🎬</button>
+
+        <div class="character-container">
+            <div class="char" id="wife-fr"><div class="speech-bubble"></div><img src="france.jpg.PNG"><div class="char-name">الفرنسية</div></div>
+            <div class="char" id="wife-lb"><div class="speech-bubble"></div><img src="lebanon.jpg.PNG"><div class="char-name">اللبنانية</div></div>
+            
+            <div class="char" id="madan"><div class="speech-bubble"></div><img src="madan.jpg.PNG" style="width: 200px; height: 200px;"><div class="char-name" style="font-size: 1.2em;">الداعية مدين</div></div>
+            
+            <div class="char" id="friend"><div class="speech-bubble"></div><img src="friend.jpg.PNG"><div class="char-name">أبو وايل</div></div>
+            
+            <div class="char" id="wife-ma"><div class="speech-bubble"></div><img src="morocco.jpg.PNG"><div class="char-name">المغربية</div></div>
+            <div class="char" id="wife-it"><div class="speech-bubble"></div><img src="italy.jpg.PNG"><div class="char-name">الإيطالية</div></div>
+        </div>
+    </div>
+
+<script>
+    const script = [
+        { id: 'madan', text: "يا أهلاً ويا مرحباً بصديق الدرب، التاجر أبو وايل في قصرنا المتواضع." },
+        { id: 'friend', text: "القصر منور بأهله يا شيخ مدين، وما شاء الله على هذا الرزق والجمال." },
+        { id: 'wife-fr', text: "Bienvenue Abu Wayel! نورت صالتنا الفخمة اليوم." },
+        { id: 'wife-ma', text: "شاينا المغربي جاهز يا أبا وايل، حضورك له طعم خاص." },
+        { id: 'madan', text: "الحمد لله الذي بنعمته تتم الصالحات، اجلسوا يا إخوان لنناقش مشاريعنا القادمة." }
+    ];
+
+    let step = 0;
+
+    function startScene() {
+        document.querySelector('.intro-btn').style.display = 'none';
+        playNextStep();
+    }
+
+    function playNextStep() {
+        if (step >= script.length) return;
+
+        // إخفاء الفقاعات القديمة
+        document.querySelectorAll('.speech-bubble').forEach(b => b.style.display = 'none');
+        document.querySelectorAll('.char').forEach(c => c.classList.remove('active'));
+
+        const current = script[step];
+        const charElement = document.getElementById(current.id);
+        const bubble = charElement.querySelector('.speech-bubble');
+
+        charElement.classList.add('active');
+        bubble.innerText = current.text;
+        bubble.style.display = 'block';
+
+        step++;
+        setTimeout(playNextStep, 4000); // الانتقال للكلام التالي كل 4 ثواني
+    }
+</script>
+
+</body>
+</html>
